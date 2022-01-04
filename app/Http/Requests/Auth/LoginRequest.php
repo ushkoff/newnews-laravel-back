@@ -15,7 +15,7 @@ class LoginRequest extends FormRequest
     {
         return [
             'email'          => 'required|string|email|max:256',
-            'password'       => 'required|string|min:5|max:100',
+            'password'       => 'required|string|min:10|max:100',
             'recaptchaToken' => 'string'
         ];
     }

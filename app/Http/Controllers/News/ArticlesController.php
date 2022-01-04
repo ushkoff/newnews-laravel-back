@@ -15,6 +15,7 @@ use App\Jobs\News\ArticleAfterDeleteJob;
 use App\Models\News\Article;
 use App\Repositories\News\ArticleRepository;
 use App\Repositories\Users\UserRepository;
+use App\Traits\VerifyRecaptchaTrait;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Log;
 
@@ -29,6 +30,11 @@ use Illuminate\Support\Facades\Log;
  */
 class ArticlesController extends BaseController
 {
+    /**
+     * Трейт с функцией bool checkRecaptcha($token, $ip)
+     */
+    use VerifyRecaptchaTrait;
+
     /**
      * @var ArticleRepository
      */
@@ -132,13 +138,13 @@ class ArticlesController extends BaseController
      */
     public function store(CreateArticleRequest $request)
     {
-//        // Verify recaptcha
-//        $recaptcha_token = $request->recaptchaToken;
-//        $ip = $request->ip();
-//        $isRecaptchaVerified = $this->checkRecaptcha($recaptcha_token, $ip);
-//        if (config('recaptcha.enabled') && !$isRecaptchaVerified) {
-//            return response()->json([ 'message' => 'Captcha is invalid.' ], 400);
-//        }
+        // Verify recaptcha
+        $recaptcha_token = $request->recaptchaToken;
+        $ip = $request->ip();
+        $isRecaptchaVerified = $this->checkRecaptcha($recaptcha_token, $ip);
+        if (config('recaptcha.enabled') && !$isRecaptchaVerified) {
+            return response()->json([ 'message' => 'Captcha is invalid.' ], 400);
+        }
 
         if ($request->user()->id != $request->user_id) {
             abort(500);
@@ -192,13 +198,13 @@ class ArticlesController extends BaseController
      */
     public function update(UpdateArticleRequest $request, $id)
     {
-//        // Verify recaptcha
-//        $recaptcha_token = $request->recaptchaToken;
-//        $ip = $request->ip();
-//        $isRecaptchaVerified = $this->checkRecaptcha($recaptcha_token, $ip);
-//        if (config('recaptcha.enabled') && !$isRecaptchaVerified) {
-//            return response()->json([ 'message' => 'Captcha is invalid.' ], 400);
-//        }
+        // Verify recaptcha
+        $recaptcha_token = $request->recaptchaToken;
+        $ip = $request->ip();
+        $isRecaptchaVerified = $this->checkRecaptcha($recaptcha_token, $ip);
+        if (config('recaptcha.enabled') && !$isRecaptchaVerified) {
+            return response()->json([ 'message' => 'Captcha is invalid.' ], 400);
+        }
 
         if ($request->user()->id != $request->user_id) {
             abort(500);
@@ -239,13 +245,13 @@ class ArticlesController extends BaseController
      */
     public function destroy($id, DeleteArticleRequest $request)
     {
-//        // Verify recaptcha
-//        $recaptcha_token = $request->recaptchaToken;
-//        $ip = $request->ip();
-//        $isRecaptchaVerified = $this->checkRecaptcha($recaptcha_token, $ip);
-//        if (config('recaptcha.enabled') && !$isRecaptchaVerified) {
-//            return response()->json([ 'message' => 'Captcha is invalid.' ], 400);
-//        }
+        // Verify recaptcha
+        $recaptcha_token = $request->recaptchaToken;
+        $ip = $request->ip();
+        $isRecaptchaVerified = $this->checkRecaptcha($recaptcha_token, $ip);
+        if (config('recaptcha.enabled') && !$isRecaptchaVerified) {
+            return response()->json([ 'message' => 'Captcha is invalid.' ], 400);
+        }
 
         if ($request->user()->id != $request->user_id) {
             abort(500);

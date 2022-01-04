@@ -6,7 +6,7 @@ use App\Http\Requests\Auth\EmailUserRequest;
 use App\Http\Requests\Auth\PasswordResetRequest;
 use App\Repositories\Auth\PasswordResetRecordRepository;
 use App\Repositories\Users\UserRepository;
-// use App\Traits\VerifyRecaptchaTrait;
+use App\Traits\VerifyRecaptchaTrait;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Support\Str;
@@ -24,7 +24,7 @@ use Illuminate\Support\Str;
  */
 class PasswordResetRecordsController extends BaseController
 {
-    // use VerifyRecaptchaTrait;
+    use VerifyRecaptchaTrait;
 
     /**
      * @var UserRepository
@@ -72,12 +72,12 @@ class PasswordResetRecordsController extends BaseController
     public function create(EmailUserRequest $request)
     {
         // Verify recaptcha
-//        $recaptcha_token = $request->recaptchaToken;
-//        $ip = $request->ip();
-//        $isRecaptchaVerified = $this->checkRecaptcha($recaptcha_token, $ip);
-//        if (config('recaptcha.enabled') && !$isRecaptchaVerified) {
-//            return response()->json([ 'message' => 'Captcha is invalid.' ], 400);
-//        }
+        $recaptcha_token = $request->recaptchaToken;
+        $ip = $request->ip();
+        $isRecaptchaVerified = $this->checkRecaptcha($recaptcha_token, $ip);
+        if (config('recaptcha.enabled') && !$isRecaptchaVerified) {
+            return response()->json([ 'message' => 'Captcha is invalid.' ], 400);
+        }
 
         $user = $this->userRepository->getUserByEmail($request->email);
 
@@ -168,12 +168,12 @@ class PasswordResetRecordsController extends BaseController
     public function reset(PasswordResetRequest $request)
     {
         // Verify recaptcha
-//        $recaptcha_token = $request->recaptchaToken;
-//        $ip = $request->ip();
-//        $isRecaptchaVerified = $this->checkRecaptcha($recaptcha_token, $ip);
-//        if (config('recaptcha.enabled') && !$isRecaptchaVerified) {
-//            return response()->json([ 'message' => 'Captcha is invalid.' ], 400);
-//        }
+        $recaptcha_token = $request->recaptchaToken;
+        $ip = $request->ip();
+        $isRecaptchaVerified = $this->checkRecaptcha($recaptcha_token, $ip);
+        if (config('recaptcha.enabled') && !$isRecaptchaVerified) {
+            return response()->json([ 'message' => 'Captcha is invalid.' ], 400);
+        }
 
         $user = $this->userRepository->getUserByEmail($request->email);
         $userNotExists = !$user;

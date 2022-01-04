@@ -44,5 +44,10 @@ Main API map located in routes/api_v1.php
     <li>CountriesController -> storage\location\countries.json</li>
 </ul>
 
+## Google ReCaptcha
+<ul>
+    <li>VerifyRecaptchaTrait -> .env settings; for all users' actions</li>
+</ul>
+
 <br>
 All right reserved (c).

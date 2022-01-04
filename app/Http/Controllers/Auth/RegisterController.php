@@ -4,7 +4,7 @@ namespace App\Http\Controllers\Auth;
 
 use App\Http\Requests\Auth\RegisterRequest;
 use App\Models\Users\User;
-// use App\Traits\VerifyRecaptchaTrait;
+use App\Traits\VerifyRecaptchaTrait;
 
 /**
  * Class RegisterController
@@ -20,7 +20,7 @@ class RegisterController extends BaseController
     /**
      * Трейт с функцией bool checkRecaptcha($token, $ip)
      */
-    // use VerifyRecaptchaTrait;
+    use VerifyRecaptchaTrait;
 
     /**
      * RegisterController constructor.
@@ -45,13 +45,13 @@ class RegisterController extends BaseController
      */
     public function register(RegisterRequest $request)
     {
-//        // Verify recaptcha
-//        $recaptcha_token = $request->recaptchaToken;
-//        $ip = $request->ip();
-//        $isRecaptchaVerified = $this->checkRecaptcha($recaptcha_token, $ip);
-//        if (config('recaptcha.enabled') && !$isRecaptchaVerified) {
-//            return response()->json([ 'message' => 'Captcha is invalid.' ], 400);
-//        }
+        // Verify recaptcha
+        $recaptcha_token = $request->recaptchaToken;
+        $ip = $request->ip();
+        $isRecaptchaVerified = $this->checkRecaptcha($recaptcha_token, $ip);
+        if (config('recaptcha.enabled') && !$isRecaptchaVerified) {
+            return response()->json([ 'message' => 'Captcha is invalid.' ], 400);
+        }
 
         $data = [
             'username'     => $request->username,

@@ -4,7 +4,7 @@ namespace App\Http\Controllers\Auth;
 
 use App\Http\Requests\Auth\LoginRequest;
 use App\Repositories\Users\UserRepository;
-// use App\Traits\VerifyRecaptchaTrait;
+use App\Traits\VerifyRecaptchaTrait;
 use Illuminate\Http\Request;
 
 /**
@@ -24,7 +24,7 @@ class LoginController extends BaseController
     /**
      * Трейт с функцией bool checkRecaptcha($token, $ip)
      */
-    // use VerifyRecaptchaTrait;
+    use VerifyRecaptchaTrait;
 
     /**
      * @var UserRepository
@@ -60,13 +60,13 @@ class LoginController extends BaseController
      */
     public function login(LoginRequest $request)
     {
-//        // Verify recaptcha
-//        $recaptcha_token = $request->recaptchaToken;
-//        $ip = $request->ip();
-//        $isRecaptchaVerified = $this->checkRecaptcha($recaptcha_token, $ip);
-//        if (config('recaptcha.enabled') && !$isRecaptchaVerified) {
-//            return response()->json([ 'message' => 'Captcha is invalid.' ], 400);
-//        }
+        // Verify recaptcha
+        $recaptcha_token = $request->recaptchaToken;
+        $ip = $request->ip();
+        $isRecaptchaVerified = $this->checkRecaptcha($recaptcha_token, $ip);
+        if (config('recaptcha.enabled') && !$isRecaptchaVerified) {
+            return response()->json([ 'message' => 'Captcha is invalid.' ], 400);
+        }
 
         // Guzzle http client to request ${APP_URL}/oauth/token
         $http = new \GuzzleHttp\Client;
