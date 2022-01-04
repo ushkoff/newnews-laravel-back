@@ -14,6 +14,7 @@ class UpdateArticleRequest extends FormRequest
     public function rules()
     {
         return [
+            'user_id'        => 'required|integer|exists:users,id',
             'category_id'    => 'required|integer|exists:categories,id',
             'title'          => 'required|string|min:10|max:' . config('articles.max_article_title'),
             'content_html'   => 'required|string|min:50|max:' . config('articles.max_article_content'),

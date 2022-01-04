@@ -4,7 +4,7 @@ namespace App\Http\Requests\Auth;
 
 use Illuminate\Foundation\Http\FormRequest;
 
-class UserRequest extends FormRequest
+class LoginRequest extends FormRequest
 {
     /**
      * Get the validation rules that apply to the request.
@@ -14,8 +14,9 @@ class UserRequest extends FormRequest
     public function rules()
     {
         return [
-            'user_id' => 'required|integer|exists:users,id',
-            'quantity' => 'integer|min:1|max:100000'
+            'email'          => 'required|string|email|max:256',
+            'password'       => 'required|string|min:5|max:100',
+            'recaptchaToken' => 'string'
         ];
     }
 }

@@ -94,7 +94,7 @@ class Article extends Model
     }
 
     /**
-     * Accessor to get date in correct format.
+     * Accessor to get created date in correct format.
      * >>> 22 Nov 2022 07:45 (UTC)
      *
      * @return string
@@ -116,7 +116,7 @@ class Article extends Model
         $createdTime = Carbon::parse($this->created_at);
         $currentTime = Carbon::now();
 
-        $difference = $currentTime->diffInHours($createdTime, true);
+        $difference = $currentTime->diffInMinutes($createdTime, true);
         $maxTimeToEdit = intval(config('articles.max_article_editing_minutes')); // in minutes; default: 240
 
         if ($difference < $maxTimeToEdit) {

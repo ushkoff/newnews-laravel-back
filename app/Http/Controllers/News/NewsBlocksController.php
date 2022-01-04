@@ -48,6 +48,10 @@ class NewsBlocksController extends BaseController
      */
     public function getYourArticles(GetArticlesRequest $request)
     {
+        if ($request->user()->id != $request->user_id) {
+            abort(500);
+        }
+
         $quantity = $request->quantity;
         $userID = intval($request->user_id);
 
@@ -64,6 +68,10 @@ class NewsBlocksController extends BaseController
      */
     public function getYourConfirmedArticles(GetArticlesRequest $request)
     {
+        if ($request->user()->id != $request->user_id) {
+            abort(500);
+        }
+
         $quantity = $request->quantity;
         $userID = intval($request->user_id);
 

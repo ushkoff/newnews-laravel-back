@@ -8,7 +8,9 @@ use App\Repositories\CoreRepository;
 /**
  * Class UserRepository
  *
- * @package App\Repositories\User
+ * Данный класс работает со всеми сущностями класса User.
+ *
+ * @package App\Repositories\Users
  */
 class UserRepository extends CoreRepository
 {

@@ -1,10 +1,10 @@
 <?php
 
-namespace App\Http\Requests\Auth;
+namespace App\Http\Requests\Users;
 
 use Illuminate\Foundation\Http\FormRequest;
 
-class UserRequest extends FormRequest
+class SetUserSettingsRequest extends FormRequest
 {
     /**
      * Get the validation rules that apply to the request.
@@ -15,7 +15,7 @@ class UserRequest extends FormRequest
     {
         return [
             'user_id' => 'required|integer|exists:users,id',
-            'quantity' => 'integer|min:1|max:100000'
+            'get_confirmation_email' => 'boolean'
         ];
     }
 }
