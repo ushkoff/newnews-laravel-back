@@ -146,10 +146,6 @@ class ArticlesController extends BaseController
             return response()->json([ 'message' => 'Captcha is invalid.' ], 400);
         }
 
-        if ($request->user()->id != $request->user_id) {
-            abort(500);
-        }
-
         $data = [
             'category_id'    => $request->category_id,
             'user_id'        => $request->user_id,
@@ -206,10 +202,6 @@ class ArticlesController extends BaseController
             return response()->json([ 'message' => 'Captcha is invalid.' ], 400);
         }
 
-        if ($request->user()->id != $request->user_id) {
-            abort(500);
-        }
-
         $data = [
             'category_id'   => $request->category_id,
             'title'         => $request->title,
@@ -251,10 +243,6 @@ class ArticlesController extends BaseController
         $isRecaptchaVerified = $this->checkRecaptcha($recaptcha_token, $ip);
         if (config('recaptcha.enabled') && !$isRecaptchaVerified) {
             return response()->json([ 'message' => 'Captcha is invalid.' ], 400);
-        }
-
-        if ($request->user()->id != $request->user_id) {
-            abort(500);
         }
 
         $article = Article::find($id);

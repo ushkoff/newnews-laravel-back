@@ -49,10 +49,6 @@ class BlockedUserRecordsController extends BaseController
      */
     public function getUserBlocklist(UserRequest $request)
     {
-        if ($request->user()->id != $request->user_id) {
-            abort(500);
-        }
-
         $quantity = $request->quantity;
         $userID = $request->user_id;
 
@@ -70,10 +66,6 @@ class BlockedUserRecordsController extends BaseController
      */
     public function blockUser(ManageBlockedUserRecordRequest $request)
     {
-        if ($request->user()->id != $request->user_id) {
-            abort(500);
-        }
-
         $authorID = $request->blocked_user_id; // ID of author, that current user wants to block
         $userID = $request->user_id; // actually user
 
@@ -117,10 +109,6 @@ class BlockedUserRecordsController extends BaseController
      */
     public function unblockUser(ManageBlockedUserRecordRequest $request)
     {
-        if ($request->user()->id != $request->user_id) {
-            abort(500);
-        }
-
         $authorID = $request->blocked_user_id; // ID of author, that current user wants to unblock
         $userID = $request->user_id; // actually user
 

@@ -57,10 +57,6 @@ class NewsRatingController extends BaseController
      */
     public function isArticleLikedByUser($id, UserRequest $request)
     {
-        if ($request->user()->id != $request->user_id) {
-            abort(500);
-        }
-
         $userID = intval($request->user_id);
         $isLiked = $this->articleRatingRepository->isArticleLikedByUserID($id, $userID);
 
@@ -76,10 +72,6 @@ class NewsRatingController extends BaseController
      */
     public function isArticleDislikedByUser($id, UserRequest $request)
     {
-        if ($request->user()->id != $request->user_id) {
-            abort(500);
-        }
-
         $userID = intval($request->user_id);
         $isDisliked = $this->articleRatingRepository->isArticleDislikedByUserID($id, $userID);
 
@@ -95,10 +87,6 @@ class NewsRatingController extends BaseController
      */
     public function likeArticle($id, UserRequest $request)
     {
-        if ($request->user()->id != $request->user_id) {
-            abort(500);
-        }
-
         $article = $this->articleRepository->getArticleByID($id);
         $userID = $request->user_id;
 
@@ -116,10 +104,6 @@ class NewsRatingController extends BaseController
      */
     public function dislikeArticle($id, UserRequest $request)
     {
-        if ($request->user()->id != $request->user_id) {
-            abort(500);
-        }
-
         $article = $this->articleRepository->getArticleByID($id);
         $userID = $request->user_id;
 

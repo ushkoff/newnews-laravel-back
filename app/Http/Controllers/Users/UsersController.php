@@ -58,10 +58,6 @@ class UsersController extends BaseController
         $userID = $request->user_id;
         $user = $this->userRepository->getUserByID($userID);
 
-        if ($request->user()->id != $user->id) {
-            abort(500);
-        }
-
         $newsConfirmNotice = $request->get_confirmation_email;
 
         if (isset($newsConfirmNotice)) { // if == 1

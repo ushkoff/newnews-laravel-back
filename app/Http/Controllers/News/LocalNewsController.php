@@ -48,10 +48,6 @@ class LocalNewsController extends BaseController
      */
     public function index(GetArticlesByCountryCodeRequest $request)
     {
-        if ($request->user()->id != $request->user_id) {
-            abort(500);
-        }
-
         $quantity = $request->quantity;
         $userID = $request->user_id;
         $country_code = $request->country_code;
@@ -70,10 +66,6 @@ class LocalNewsController extends BaseController
      */
     public function getSearch(SearchArticlesByCountryCodeRequest $request)
     {
-        if ($request->user()->id != $request->user_id) {
-            abort(500);
-        }
-
         $quantity = $request->quantity;
         $userID = $request->user_id;
         $country_code = $request->country_code;
@@ -94,10 +86,6 @@ class LocalNewsController extends BaseController
      */
     public function getByCategory(GetArticlesByCountryCodeRequest $request, $categoryID)
     {
-        if ($request->user()->id != $request->user_id) {
-            abort(500);
-        }
-
         $quantity = $request->quantity;
         $userID = $request->user_id;
         $country_code = $request->country_code;
@@ -117,17 +105,13 @@ class LocalNewsController extends BaseController
      */
     public function onlyConfirmed(GetArticlesByCountryCodeRequest $request)
     {
-        if ($request->user()->id != $request->user_id) {
-            abort(500);
-        }
-
         $quantity = $request->quantity;
         $userID = $request->user_id;
         $country_code = $request->country_code;
 
         $blocklist = $this->userRepository->getUserBlocklistByID($userID);
         $confirmedLocalNewsList = $this->localNewsRepository
-            ->getConfirmedArticlesByCountryCode($country_code, $blocklist);
+            ->getConfirmedArticlesByCountryCode($country_code, $quantity, $blocklist);
 
         return GetArticlesResource::collection($confirmedLocalNewsList);
     }
