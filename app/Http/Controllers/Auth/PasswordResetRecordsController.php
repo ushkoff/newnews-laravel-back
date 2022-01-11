@@ -118,7 +118,6 @@ class PasswordResetRecordsController extends BaseController
      * (используя тот же токен в ссылке)
      *
      * @param $token
-     * @return \Illuminate\Http\JsonResponse
      */
     public function find($token)
     {
@@ -141,10 +140,10 @@ class PasswordResetRecordsController extends BaseController
         }
 
         // redirect to frontend
-//        $url = config('app.frontend_url') . '/reset-password/' . $passwordResetInstance->token;
-//        return redirect($url);
+        $url = config('app.frontend_url') . 'reset-password/' . $passwordResetRecordInstance->token;
+        return redirect($url);
 
-        return response()->json(['token' => $token], 200);
+        // return response()->json(['token' => $token], 200);
     }
 
     /**

@@ -63,6 +63,7 @@ class LoginController extends BaseController
         // Verify recaptcha
         $recaptcha_token = $request->recaptchaToken;
         $ip = $request->ip();
+
         $isRecaptchaVerified = $this->checkRecaptcha($recaptcha_token, $ip);
         if (config('recaptcha.enabled') && !$isRecaptchaVerified) {
             return response()->json([ 'message' => 'Captcha is invalid.' ], 400);

@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Auth;
 
 use App\Http\Requests\Auth\RegisterRequest;
 use App\Models\Users\User;
+use App\Repositories\Users\UserRepository;
 use App\Traits\VerifyRecaptchaTrait;
 
 /**
@@ -23,11 +24,20 @@ class RegisterController extends BaseController
     use VerifyRecaptchaTrait;
 
     /**
+     * @var UserRepository
+     *
+     * Репозиторий для доступа к специфическим полям сущности модели User в БД.
+     */
+    private $userRepository;
+
+    /**
      * RegisterController constructor.
      */
     public function __construct()
     {
         parent::__construct();
+
+        $this->userRepository = app(UserRepository::class);
     }
 
     /**
@@ -51,6 +61,18 @@ class RegisterController extends BaseController
         $isRecaptchaVerified = $this->checkRecaptcha($recaptcha_token, $ip);
         if (config('recaptcha.enabled') && !$isRecaptchaVerified) {
             return response()->json([ 'message' => 'Captcha is invalid.' ], 400);
+        }
+
+        // Check if user with such email exists
+        $userWithEmail = $this->userRepository->getUserByEmail($request->email);
+        if ($userWithEmail) {
+            return response()->json(['message' => 'A user with this email already exists. Try to login'], 403);
+        }
+
+        // Check if user with such username exists
+        $userWithUsername = $this->userRepository->getUserByUsername($request->username);
+        if ($userWithUsername) {
+            return response()->json(['message' => 'A user with this username already exists. Choose another one'], 403);
         }
 
         $data = [

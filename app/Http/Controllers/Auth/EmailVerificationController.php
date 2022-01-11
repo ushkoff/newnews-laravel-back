@@ -52,11 +52,10 @@ class EmailVerificationController extends BaseController
         $user->save();
 
         // redirect to frontend
-//        $url = config('app.frontend_url') . '/login?verification=true';
-//
-//        return redirect($url);
+        $url = config('app.frontend_url') . 'login?verification=true';
+        return redirect($url);
 
-        return response()->json(['message' => 'Email verified successfully! Redirecting...'], 200);
+        // return response()->json(['message' => 'Email verified successfully! Redirecting...'], 200);
 
     }
 

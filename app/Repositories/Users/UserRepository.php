@@ -46,6 +46,18 @@ class UserRepository extends CoreRepository
     }
 
     /**
+     * Get user by username.
+     *
+     * @param  string $username
+     */
+    public function getUserByUsername($username)
+    {
+        return $this->startConditions()
+            ->where('username', $username)
+            ->first();
+    }
+
+    /**
      * Check if user verified (by his/her email).
      *
      * If column 'email_verified_at' is not empty -> verified
