@@ -58,6 +58,10 @@ class NewsRatingController extends BaseController
     public function isArticleLikedByUser($id, UserRequest $request)
     {
         $userID = intval($request->user_id);
+        if ($userID != auth()->guard('api')->user()->id) {
+            abort(401);
+        }
+
         $isLiked = $this->articleRatingRepository->isArticleLikedByUserID($id, $userID);
 
         return response()->json(['message' => $isLiked], 200);
@@ -73,6 +77,10 @@ class NewsRatingController extends BaseController
     public function isArticleDislikedByUser($id, UserRequest $request)
     {
         $userID = intval($request->user_id);
+        if ($userID != auth()->guard('api')->user()->id) {
+            abort(401);
+        }
+
         $isDisliked = $this->articleRatingRepository->isArticleDislikedByUserID($id, $userID);
 
         return response()->json(['message' => $isDisliked], 200);
@@ -89,6 +97,9 @@ class NewsRatingController extends BaseController
     {
         $article = $this->articleRepository->getArticleByID($id);
         $userID = $request->user_id;
+        if ($userID != auth()->guard('api')->user()->id) {
+            abort(401);
+        }
 
         event(new ArticleLikedEvent($article, $userID));
 
@@ -106,6 +117,9 @@ class NewsRatingController extends BaseController
     {
         $article = $this->articleRepository->getArticleByID($id);
         $userID = $request->user_id;
+        if ($userID != auth()->guard('api')->user()->id) {
+            abort(401);
+        }
 
         event(new ArticleDislikedEvent($article, $userID));
 

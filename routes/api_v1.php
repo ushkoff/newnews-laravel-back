@@ -198,9 +198,9 @@ Route::group(['namespace' => 'News', 'prefix' => 'news'], function () {
 
         /**
          * Get article data by ID / Вывести данные записи за её ID.
-         * GET news/global-news/{id}: JSON {id,category,categoryID,categorySlug,userID,username,date,isEdited,isEditable,country,countryCode,refs,author_pubkey,signature,rating,isConfirmed,title,content}
+         * POST news/global-news/{id} {user_id}: JSON {id,category,categoryID,categorySlug,userID,username,date,isEdited,isEditable,country,countryCode,refs,author_pubkey,signature,rating,isConfirmed,title,content}
          */
-        Route::get('{id}', 'ArticlesController@show')
+        Route::post('{id}', 'ArticlesController@show')
             ->name('news.globalNews.show');
 
         Route::group(['middleware' => 'auth:api'], function () {

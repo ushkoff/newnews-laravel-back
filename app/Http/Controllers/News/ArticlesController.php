@@ -7,6 +7,7 @@ use App\Http\Requests\News\CreateArticleRequest;
 use App\Http\Requests\News\DeleteArticleRequest;
 use App\Http\Requests\News\GetArticlesRequest;
 use App\Http\Requests\News\SearchArticlesRequest;
+use App\Http\Requests\News\ShowArticleRequest;
 use App\Http\Requests\News\UpdateArticleRequest;
 use App\Http\Resources\News\GetArticleResource;
 use App\Http\Resources\News\GetArticlesResource;
@@ -67,7 +68,13 @@ class ArticlesController extends BaseController
         $quantity = $request->quantity;
         $userID = $request->user_id;
         $blocklist = [];
-        if (! is_null($userID)) $blocklist = $this->userRepository->getUserBlocklistByID($userID);
+
+        if (! is_null($userID)) {
+            if ($userID != auth()->guard('api')->user()->id) {
+                abort(401);
+            }
+            $blocklist = $this->userRepository->getUserBlocklistByID($userID);
+        }
 
         $articlesList = $this->articleRepository->getAllArticles($quantity, $blocklist);
 
@@ -85,7 +92,13 @@ class ArticlesController extends BaseController
         $quantity = $request->quantity;
         $userID = $request->user_id;
         $blocklist = [];
-        if (! is_null($userID)) $blocklist = $this->userRepository->getUserBlocklistByID($userID);
+
+        if (! is_null($userID)) {
+            if ($userID != auth()->guard('api')->user()->id) {
+                abort(401);
+            }
+            $blocklist = $this->userRepository->getUserBlocklistByID($userID);
+        }
 
         $query = $request->searchQuery;
         $searchArticlesList = $this->articleRepository->getSearchArticles($query, $quantity, $blocklist);
@@ -105,7 +118,13 @@ class ArticlesController extends BaseController
         $quantity = $request->quantity;
         $userID = $request->user_id;
         $blocklist = [];
-        if (! is_null($userID)) $blocklist = $this->userRepository->getUserBlocklistByID($userID);
+
+        if (! is_null($userID)) {
+            if ($userID != auth()->guard('api')->user()->id) {
+                abort(401);
+            }
+            $blocklist = $this->userRepository->getUserBlocklistByID($userID);
+        }
 
         $categoryArticlesList= $this->articleRepository->getArticlesByCategoryID($categoryID, $quantity, $blocklist);
 
@@ -123,7 +142,13 @@ class ArticlesController extends BaseController
         $quantity = $request->quantity;
         $userID = $request->user_id;
         $blocklist = [];
-        if (! is_null($userID)) $blocklist = $this->userRepository->getUserBlocklistByID($userID);
+
+        if (! is_null($userID)) {
+            if ($userID != auth()->guard('api')->user()->id) {
+                abort(401);
+            }
+            $blocklist = $this->userRepository->getUserBlocklistByID($userID);
+        }
 
         $confirmedArticlesList = $this->articleRepository->getConfirmedArticles($quantity, $blocklist);
 
@@ -144,6 +169,11 @@ class ArticlesController extends BaseController
         $isRecaptchaVerified = $this->checkRecaptcha($recaptcha_token, $ip);
         if (config('recaptcha.enabled') && !$isRecaptchaVerified) {
             return response()->json([ 'message' => 'Captcha is invalid.' ], 400);
+        }
+
+        $userID = $request->user_id;
+        if ($userID != auth()->guard('api')->user()->id) {
+            abort(401);
         }
 
         $data = [
@@ -174,13 +204,21 @@ class ArticlesController extends BaseController
 
     /**
      * Get specific article data (by ID).
-     *
-     * @param $id
-     * @return GetArticleResource
      */
-    public function show($id)
+    public function show(ShowArticleRequest $request, $id)
     {
+        $userID = $request->user_id;
+        $blocklist = [];
+
+        if (! is_null($userID)) {
+            $blocklist = $this->userRepository->getUserBlocklistByID($userID);
+        }
+
         $article = $this->articleRepository->getArticleByID($id);
+
+        if (!is_null($userID) && in_array($article->user_id, $blocklist)) {
+            return response()->json(['message' => 'Article author is blocked.'], 403);
+        }
 
         return new GetArticleResource($article);
     }
@@ -200,6 +238,11 @@ class ArticlesController extends BaseController
         $isRecaptchaVerified = $this->checkRecaptcha($recaptcha_token, $ip);
         if (config('recaptcha.enabled') && !$isRecaptchaVerified) {
             return response()->json([ 'message' => 'Captcha is invalid.' ], 400);
+        }
+
+        $userID = $request->user_id;
+        if ($userID != auth()->guard('api')->user()->id) {
+            abort(401);
         }
 
         $data = [
@@ -247,6 +290,9 @@ class ArticlesController extends BaseController
 
         $article = Article::find($id);
         $userID = intval($request->user_id);
+        if ($userID != auth()->guard('api')->user()->id) {
+            abort(401);
+        }
 
         if ($article->user_id === $userID) {
             $article->forceDelete();

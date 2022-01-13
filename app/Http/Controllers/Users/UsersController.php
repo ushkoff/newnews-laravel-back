@@ -40,7 +40,7 @@ class UsersController extends BaseController
      */
     public function getCurrentUserData(Request $request)
     {
-        $userData = $request->user();
+        $userData = auth()->guard('api')->user();
 
         return new GetUserDataResource($userData);
     }
@@ -56,6 +56,10 @@ class UsersController extends BaseController
     public function changeSettings(SetUserSettingsRequest $request)
     {
         $userID = $request->user_id;
+        if ($userID != auth()->guard('api')->user()->id) {
+            abort(401);
+        }
+
         $user = $this->userRepository->getUserByID($userID);
 
         $newsConfirmNotice = $request->get_confirmation_email;

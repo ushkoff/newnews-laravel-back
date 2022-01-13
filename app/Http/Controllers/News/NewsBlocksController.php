@@ -50,6 +50,9 @@ class NewsBlocksController extends BaseController
     {
         $quantity = $request->quantity;
         $userID = intval($request->user_id);
+        if ($userID != auth()->guard('api')->user()->id) {
+            abort(401);
+        }
 
         $yourArticlesList = $this->articleRepository->getYourArticles($userID, $quantity);
 
@@ -66,6 +69,9 @@ class NewsBlocksController extends BaseController
     {
         $quantity = $request->quantity;
         $userID = intval($request->user_id);
+        if ($userID != auth()->guard('api')->user()->id) {
+            abort(401);
+        }
 
         $yourConfirmedArticlesList = $this->articleRepository->getYourConfirmedArticles($userID, $quantity);
 
@@ -83,7 +89,12 @@ class NewsBlocksController extends BaseController
         $quantity = $request->quantity;
         $userID = $request->user_id;
         $blocklist = [];
-        if (! is_null($userID)) $blocklist = $this->userRepository->getUserBlocklistByID($userID);
+        if (! is_null($userID)) {
+            if ($userID != auth()->guard('api')->user()->id) {
+                abort(401);
+            }
+            $blocklist = $this->userRepository->getUserBlocklistByID($userID);
+        }
 
         $latestArticlesList = $this->articleRepository->getLatestArticles($quantity, $blocklist);
 
@@ -101,7 +112,12 @@ class NewsBlocksController extends BaseController
         $quantity = $request->quantity;
         $userID = $request->user_id;
         $blocklist = [];
-        if (! is_null($userID)) $blocklist = $this->userRepository->getUserBlocklistByID($userID);
+        if (! is_null($userID)) {
+            if ($userID != auth()->guard('api')->user()->id) {
+                abort(401);
+            }
+            $blocklist = $this->userRepository->getUserBlocklistByID($userID);
+        }
 
         $randomCategoryArticlesList = $this->articleRepository->getRandomCategoryArticles($quantity, $blocklist);
 

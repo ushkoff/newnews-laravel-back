@@ -51,6 +51,9 @@ class BlockedUserRecordsController extends BaseController
     {
         $quantity = $request->quantity;
         $userID = $request->user_id;
+        if ($userID != auth()->guard('api')->user()->id) {
+            abort(401);
+        }
 
         $blocklist = $this->blockedUserRecordRepository->getBlockedUsersByUserID($userID, $quantity);
 
@@ -68,6 +71,9 @@ class BlockedUserRecordsController extends BaseController
     {
         $authorID = $request->blocked_user_id; // ID of author, that current user wants to block
         $userID = $request->user_id; // actually user
+        if ($userID != auth()->guard('api')->user()->id) {
+            abort(401);
+        }
 
         // User cannot block himself.
         if ($authorID === $userID) {
@@ -111,6 +117,9 @@ class BlockedUserRecordsController extends BaseController
     {
         $authorID = $request->blocked_user_id; // ID of author, that current user wants to unblock
         $userID = $request->user_id; // actually user
+        if ($userID != auth()->guard('api')->user()->id) {
+            abort(401);
+        }
 
         // User cannot block/unblock himself.
         if ($authorID === $userID) {

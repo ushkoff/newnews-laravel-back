@@ -51,6 +51,9 @@ class LocalNewsController extends BaseController
         $quantity = $request->quantity;
         $userID = $request->user_id;
         $country_code = $request->country_code;
+        if ($userID != auth()->guard('api')->user()->id) {
+            abort(401);
+        }
 
         $blocklist = $this->userRepository->getUserBlocklistByID($userID);
         $localNewsList = $this->localNewsRepository->getAllArticlesByCountryCode($country_code, $quantity, $blocklist);
@@ -70,6 +73,9 @@ class LocalNewsController extends BaseController
         $userID = $request->user_id;
         $country_code = $request->country_code;
         $query = $request->searchQuery;
+        if ($userID != auth()->guard('api')->user()->id) {
+            abort(401);
+        }
 
         $blocklist = $this->userRepository->getUserBlocklistByID($userID);
         $searchLocalNewsList = $this->localNewsRepository->getSearchArticlesByCountryCode($query, $country_code, $quantity, $blocklist);
@@ -89,6 +95,9 @@ class LocalNewsController extends BaseController
         $quantity = $request->quantity;
         $userID = $request->user_id;
         $country_code = $request->country_code;
+        if ($userID != auth()->guard('api')->user()->id) {
+            abort(401);
+        }
 
         $blocklist = $this->userRepository->getUserBlocklistByID($userID);
         $categoryLocalNewsList = $this->localNewsRepository
@@ -108,6 +117,9 @@ class LocalNewsController extends BaseController
         $quantity = $request->quantity;
         $userID = $request->user_id;
         $country_code = $request->country_code;
+        if ($userID != auth()->guard('api')->user()->id) {
+            abort(401);
+        }
 
         $blocklist = $this->userRepository->getUserBlocklistByID($userID);
         $confirmedLocalNewsList = $this->localNewsRepository
