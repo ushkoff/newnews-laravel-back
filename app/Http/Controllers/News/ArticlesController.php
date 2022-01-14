@@ -256,7 +256,7 @@ class ArticlesController extends BaseController
 
         // if about 4 hours have passed ...
         if (! $article->is_editable) {
-            abort(403);
+            abort(403, '4 hours to edit have been already passed.');
         }
 
         $result = $article->update($data);
@@ -280,14 +280,6 @@ class ArticlesController extends BaseController
      */
     public function destroy($id, DeleteArticleRequest $request)
     {
-        // Verify recaptcha
-        $recaptcha_token = $request->recaptchaToken;
-        $ip = $request->ip();
-        $isRecaptchaVerified = $this->checkRecaptcha($recaptcha_token, $ip);
-        if (config('recaptcha.enabled') && !$isRecaptchaVerified) {
-            return response()->json([ 'message' => 'Captcha is invalid.' ], 400);
-        }
-
         $article = Article::find($id);
         $userID = intval($request->user_id);
         if ($userID != auth()->guard('api')->user()->id) {
@@ -295,15 +287,15 @@ class ArticlesController extends BaseController
         }
 
         if ($article->user_id === $userID) {
+            // Delete likes and dislikes related to this article
+            $job = new ArticleAfterDeleteJob($id);
+            $this->dispatch($job);
+
             $article->forceDelete();
 
             if ($article->is_confirmed) {
                 Log::channel('actions')->info('Confirmed article "'.$article->title.'" under ID '.$article->id.' was deleted.');
             }
-
-            // Delete likes and dislikes related to this article
-            $job = new ArticleAfterDeleteJob($id);
-            $this->dispatch($job);
 
             return response()->json(['message' => 'Article has been successfully deleted.'], 200);
         } else {

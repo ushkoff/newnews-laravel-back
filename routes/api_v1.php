@@ -171,6 +171,7 @@ Route::group(['namespace' => 'News', 'prefix' => 'news'], function () {
      * Частично необходима авторизация.
      */
     Route::group(['prefix' => 'global-news'], function () {
+
         /**
          * Get all articles / Вывести список всех записей.
          * POST news/global-news/ {quantity, user_id}: JSON [{id,category,categorySlug,humanDate,country,rating,isConfirmed,title}, {...}]
@@ -196,13 +197,6 @@ Route::group(['namespace' => 'News', 'prefix' => 'news'], function () {
         Route::post('confirmed', 'ArticlesController@getOnlyConfirmed')
             ->name('news.globalNews.confirmed');
 
-        /**
-         * Get article data by ID / Вывести данные записи за её ID.
-         * POST news/global-news/{id} {user_id}: JSON {id,category,categoryID,categorySlug,userID,username,date,isEdited,isEditable,country,countryCode,refs,author_pubkey,signature,rating,isConfirmed,title,content}
-         */
-        Route::post('{id}', 'ArticlesController@show')
-            ->name('news.globalNews.show');
-
         Route::group(['middleware' => 'auth:api'], function () {
             /**
              * Create article / Создание записи.
@@ -225,6 +219,13 @@ Route::group(['namespace' => 'News', 'prefix' => 'news'], function () {
             Route::post('{id}/delete', 'ArticlesController@destroy')
                 ->name('news.globalNews.destroy');
         }); // 'middleware' => 'auth:api'
+
+        /**
+         * Get article data by ID / Вывести данные записи за её ID.
+         * POST news/global-news/{id} {user_id}: JSON {id,category,categoryID,categorySlug,userID,username,date,isEdited,isEditable,country,countryCode,refs,author_pubkey,signature,rating,isConfirmed,title,content}
+         */
+        Route::post('{id}', 'ArticlesController@show')
+            ->name('news.globalNews.show');
     }); // prefix => 'global-news'
 
     /**
