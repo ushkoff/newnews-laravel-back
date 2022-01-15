@@ -36,7 +36,6 @@ class ArticleFactory extends Factory
 
         $ratingNumber = rand(-56, 1574);
         $isConfirmed = rand(1, 2) > 1;
-        $cost = rand(10, 1000);
         $isEdited = rand(1, 2) > 1;
 
         $createdAt = $faker->date('Y-m-d H:i:s');
@@ -51,7 +50,6 @@ class ArticleFactory extends Factory
             'signature' => $signature,
             'rating' => $ratingNumber,
             'is_confirmed' => $isConfirmed,
-            'cost' => $cost,
             'is_edited' => $isEdited,
             'country' => $country,
             'country_code' => $countryCode,

@@ -36,7 +36,6 @@ class CreateArticlesTable extends Migration
 
             $table->integer('rating')->default(0);
             $table->boolean('is_confirmed')->default(0);
-            $table->bigInteger('cost')->nullable();
 
             $table->boolean('is_edited')->default(0);
             $table->timestamps();

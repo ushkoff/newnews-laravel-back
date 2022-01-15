@@ -343,6 +343,38 @@ Route::group(['namespace' => 'News', 'prefix' => 'news'], function () {
         Route::post('{id}/dislike', 'NewsRatingController@dislikeArticle')
             ->name('news.dislikeAction');
     }); // 'middleware' => 'auth:api'
+
+    /**
+     * JSON Full News / "Полные" новости в JSON формате
+     *
+     * Группа маршрутов к управлению записями новостей, которые
+     * сохраняются в БД сайта, когда на nodes уходят новости
+     * лишь "короткого" (short) формата. Собственно, они [short news]
+     * посылаются на "полные" (full) новости из этого хранилища.
+     *
+     * Данные маршруты относятся к префиксу /node/full/
+     * Частично необходима авторизация.
+     */
+    Route::group(['namespace' => 'Node', 'prefix' => 'node/full'], function () {
+        /**
+         * Get JSON full news by it's hash / Получить "полную" новость используя её хэш
+         * GET news/node/full/{hash}: JSON { content_json }
+         */
+        Route::get('{hash}', 'FullNodeNewsController@show')
+            ->name('news.node.full.show');
+        /**
+         * Авторизированные пользователи могут добавить "полную" новость в БД сайта
+         */
+        Route::group(['middleware' => 'auth:api'], function () {
+            /**
+             * Store JSON full news / Сохранить "полную" новость в БД в JSON формате
+             * POST news/node/full/store { content_json }: msg
+             */
+            Route::post('store', 'FullNodeNewsController@store')
+                ->name('news.node.full.store');
+        });
+    }); // prefix => 'node/full'
+
 }); // prefix => 'news'
 
 /**
@@ -371,5 +403,5 @@ Route::group(['namespace' => 'Location', 'prefix' => 'location'], function () {
          */
         Route::get('alpha/{code}', 'CountriesController@getCountryByCountryCode')
             ->name('location.countries.getByCountryCode');
-    });
-});
+    }); // prefix => 'countries'
+}); // prefix => 'location'

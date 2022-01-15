@@ -19,12 +19,10 @@ class GetUserDataResource extends JsonResource
             'username'             => $this->username,
             'email'                => $this->email,
             'newsNumber'           => $this->news_num,
-            'verifiedNewsNumber'   => $this->verified_news_num,
             'country'              => $this->country,
             'countryCode'          => $this->country_code,
             'timezone'             => $this->timezone,
-            'dateRegistered'       => $this->created_at_formatted,
-            'getConfirmationEmail' => $this->news_confirm_notice
+            'dateRegistered'       => $this->created_at_formatted
         ];
     }
 }

@@ -240,7 +240,6 @@ class ArticleRepository extends CoreRepository
             'country',
             'rating',
             'is_confirmed',
-            'cost',
             'created_at'
         ];
 

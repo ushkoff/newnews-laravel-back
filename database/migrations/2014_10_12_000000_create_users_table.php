@@ -28,7 +28,6 @@ class CreateUsersTable extends Migration
             $table->string('password');
 
             $table->integer('news_num')->default(0);
-            $table->integer('verified_news_num')->default(0);
 
             $table->string('country')->nullable();
             $table->string('country_code')->nullable();
@@ -36,9 +35,6 @@ class CreateUsersTable extends Migration
 
             // ID of users, news from whom you don't want to see
             $table->text('blocklist')->default('[]');
-
-            // Will user get a notice on email after confirmation his article
-            $table->boolean('news_confirm_notice')->default(1);
 
             $table->timestamps();
 

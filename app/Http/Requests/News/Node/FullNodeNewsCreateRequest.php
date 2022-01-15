@@ -1,10 +1,10 @@
 <?php
 
-namespace App\Http\Requests\Users;
+namespace App\Http\Requests\News\Node;
 
 use Illuminate\Foundation\Http\FormRequest;
 
-class SetUserSettingsRequest extends FormRequest
+class FullNodeNewsCreateRequest extends FormRequest
 {
     /**
      * Get the validation rules that apply to the request.
@@ -15,7 +15,8 @@ class SetUserSettingsRequest extends FormRequest
     {
         return [
             'user_id' => 'required|integer|exists:users,id',
-            // 'some_property' => 'boolean'
+            'hash' => 'required|string|min:10|max:1000',
+            'content_json' => 'required|string|min:10|max:10000'
         ];
     }
 }

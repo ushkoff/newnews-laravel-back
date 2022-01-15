@@ -60,14 +60,14 @@ class UsersController extends BaseController
             abort(401);
         }
 
-        $user = $this->userRepository->getUserByID($userID);
-
-        $newsConfirmNotice = $request->get_confirmation_email;
-
-        if (isset($newsConfirmNotice)) { // if == 1
-            $user->news_confirm_notice = $newsConfirmNotice;
-            $user->save();
-        }
+//        $user = $this->userRepository->getUserByID($userID);
+//
+//        $newsConfirmNotice = $request->get_confirmation_email;
+//
+//        if (isset($newsConfirmNotice)) { // if == 1
+//            $user->news_confirm_notice = $newsConfirmNotice;
+//            $user->save();
+//        }
 
         return response()->json(['message' => 'Success'], 200);
     }
