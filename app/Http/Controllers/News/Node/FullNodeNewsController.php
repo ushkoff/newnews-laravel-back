@@ -56,14 +56,6 @@ class FullNodeNewsController extends BaseController
      */
     public function store(FullNodeNewsCreateRequest $request)
     {
-        // Verify recaptcha
-        $recaptcha_token = $request->recaptchaToken;
-        $ip = $request->ip();
-        $isRecaptchaVerified = $this->checkRecaptcha($recaptcha_token, $ip);
-        if (config('recaptcha.enabled') && !$isRecaptchaVerified) {
-            return response()->json([ 'message' => 'Captcha is invalid.' ], 400);
-        }
-
         $userID = $request->user_id;
         if ($userID != auth()->guard('api')->user()->id) {
             abort(401);
